@@ -1,5 +1,5 @@
-﻿using _3dEngine;
-using _3dEngine.Network;
+﻿using Neo3dEngine;
+using Neo3dEngine.Network;
 
 namespace SampleGame.NetworkPackets;
 

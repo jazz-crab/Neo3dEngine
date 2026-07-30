@@ -1,4 +1,4 @@
-﻿using _3dEngine.Network;
+﻿using Neo3dEngine.Network;
 
 namespace SampleGame.NetworkPackets;
 

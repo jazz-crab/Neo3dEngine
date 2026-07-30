@@ -1,6 +1,5 @@
-﻿using _3dEngine;
-using _3dEngine.Implementation;
-using _3dEngine.Network;
+﻿using Neo3dEngine;
+using Neo3dEngine.Network;
 using SampleGame.Scenes;
 
 namespace SampleGame;
@@ -46,7 +45,7 @@ class Program
         Thread.Sleep(500);
         Console.Clear();
         
-        new Frame(new PriviewNetworkScene(new DisplayManagerAsync(), isServer, ip, port), new ConsoleScreenAsync()).MainLoop();
-        //new Frame(new PreviewScene(new DisplayManagerAsync()), new ConsoleScreenAsync()).MainLoop();
+        new Frame(new PriviewNetworkScene(isServer, ip, port), new ConsoleScreen()).MainLoop();
+        //new Frame(new PreviewScene(]), new ConsoleScreenAsync()).MainLoop();
     }
 }

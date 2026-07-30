@@ -1,11 +1,7 @@
-﻿using _3dEngine;
-using _3dEngine.AbstractClass;
-using _3dEngine.Implementation;
-using _3dEngine.Inputs;
-using _3dEngine.Interfaces;
-using _3dEngine.Network;
-using _3dEngine.Shape;
-using _3dEngine.StaticClass;
+﻿using Neo3dEngine;
+using Neo3dEngine.Inputs;
+using Neo3dEngine.Network;
+
 using SampleGame.NetworkPackets;
 
 namespace SampleGame.Scenes;
@@ -26,7 +22,7 @@ public class PriviewNetworkScene : Scene
     private const int MaxHistory = 5;
 
 
-    public PriviewNetworkScene(IDisplaysManagerAsync manager, bool isServer, string targetIp, int port) : base(manager)
+    public PriviewNetworkScene(bool isServer, string targetIp, int port)
     {
         _myCamera = new Camera(new Vector3(0, 2, -2), Vector3.Zero);
         _mainLight = new Light(new Vector3(0, 2, -2), 500);
