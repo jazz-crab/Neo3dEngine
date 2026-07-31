@@ -1,6 +1,4 @@
-﻿using Neo3dEngine.Inputs;
-
-namespace Neo3dEngine;
+﻿namespace Neo3dEngine;
 public class Frame(Scene activeScene, Screen screen)
 {
     private readonly Screen _screen = screen;

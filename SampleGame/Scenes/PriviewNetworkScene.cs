@@ -1,5 +1,4 @@
 ﻿using Neo3dEngine;
-using Neo3dEngine.Inputs;
 using Neo3dEngine.Network;
 
 using SampleGame.NetworkPackets;

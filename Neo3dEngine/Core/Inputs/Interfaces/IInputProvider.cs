@@ -1,4 +1,4 @@
-﻿namespace Neo3dEngine.Inputs;
+﻿namespace Neo3dEngine;
 
 internal interface IInputProvider : IDisposable
 {

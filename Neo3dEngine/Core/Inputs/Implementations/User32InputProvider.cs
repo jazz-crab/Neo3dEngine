@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Neo3dEngine.Inputs;
+namespace Neo3dEngine;
 
 internal class User32InputProvider : IInputProvider
 {

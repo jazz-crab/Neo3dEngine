@@ -8,8 +8,7 @@ public class CPUConsoleScreen : Screen
     private readonly int[] _brightnessBuffer;
     private readonly Color[] _colorBuffer;
     private readonly char[] _charBuffer;
-    
-    private readonly StringBuilder _ansiBuffer;
+    private readonly IConsolePresenter _presenter;
 
     private readonly float _aspectRatio;
 
@@ -22,7 +21,9 @@ public class CPUConsoleScreen : Screen
         _brightnessBuffer = new int[Width * Height];
         _colorBuffer = new Color[Width * Height];
         _charBuffer = new char[Width * Height];
-        _ansiBuffer = new StringBuilder(Width * Height * 20);
+        _presenter = IsTrueColorActive 
+            ? new TrueColorConsolePresenter(Width, Height) 
+            : new LegacyConsolePresenter(Width, Height);
         Console.CursorVisible = false;
 
         float windowAspect = (float)Width / Height;
@@ -36,25 +37,6 @@ public class CPUConsoleScreen : Screen
         uv.X *= _aspectRatio;
         uv.Y = -uv.Y;
         return uv;
-    }
-
-    public override void DrawText(string text, Vector2Int position, Color color)
-    {
-        try
-        {
-            Console.SetCursorPosition(position.X, position.Y);
-
-            if (IsTrueColorActive)
-            {
-                Console.Write($"\x1b[38;2;{color.R};{color.G};{color.B}m{text}\x1b[0m");
-            }
-            else
-            {
-                Console.ForegroundColor = color.ToConsoleColor();
-                Console.Write(text);
-            }
-        }
-        catch { }
     }
     
     public override void RenderFrame(Scene scene)
@@ -88,6 +70,31 @@ public class CPUConsoleScreen : Screen
         Present();
     }
     
+    protected override void Present()
+    {
+        Console.SetCursorPosition(0, 0);
+        _presenter.Present(_charBuffer, _colorBuffer);
+    }
+    
+    public override void DrawText(string text, Vector2Int position, Color color)
+    {
+        try
+        {
+            Console.SetCursorPosition(position.X, position.Y);
+
+            if (IsTrueColorActive)
+            {
+                Console.Write($"\x1b[38;2;{color.R};{color.G};{color.B}m{text}\x1b[0m");
+            }
+            else
+            {
+                Console.ForegroundColor = color.ToConsoleColor();
+                Console.Write(text);
+            }
+        }
+        catch { }
+    }
+    
     private void DrawTextToBuffer(string text, Vector2Int pos, Color color)
     {
         for (int i = 0; i < text.Length; i++)
@@ -101,89 +108,6 @@ public class CPUConsoleScreen : Screen
                 _charBuffer[index] = text[i];
                 _colorBuffer[index] = color;
             }
-        }
-    }
-    
-    protected override void Present()
-    {
-        Console.SetCursorPosition(0, 0);
-
-        if (IsTrueColorActive)
-        {
-            PresentTrueColor();
-        }
-        else
-        {
-            PresentLegacyConsoleColor();
-        }
-    }
-    
-    private void PresentTrueColor()
-    {
-        _ansiBuffer.Clear();
-
-        int bufferLength = _charBuffer.Length;
-        int currentIndex = 0;
-
-        Color lastColor = default;
-        bool isFirst = true;
-
-        while (currentIndex < bufferLength)
-        {
-            Color currentColor = _colorBuffer[currentIndex];
-            int runLength = 0;
-
-            while (currentIndex + runLength < bufferLength &&
-                   _colorBuffer[currentIndex + runLength] == currentColor)
-            {
-                runLength++;
-            }
-
-            if (isFirst || currentColor != lastColor)
-            {
-                _ansiBuffer.Append("\x1b[38;2;")
-                    .Append(currentColor.R).Append(';')
-                    .Append(currentColor.G).Append(';')
-                    .Append(currentColor.B).Append('m');
-                
-                lastColor = currentColor;
-                isFirst = false;
-            }
-
-            _ansiBuffer.Append(_charBuffer, currentIndex, runLength);
-            currentIndex += runLength;
-        }
-
-        _ansiBuffer.Append("\x1b[0m");
-
-        Console.Out.Write(_ansiBuffer.ToString());
-    }
-    
-    private void PresentLegacyConsoleColor()
-    {
-        Console.SetCursorPosition(0, 0);
-
-        int bufferLength = _charBuffer.Length;
-        int currentIndex = 0;
-
-        while (currentIndex < bufferLength)
-        {
-            ConsoleColor currentColor = _colorBuffer[currentIndex].ToConsoleColor();
-            int runLength = 0;
-
-            while (currentIndex + runLength < bufferLength &&
-                   _colorBuffer[currentIndex + runLength].ToConsoleColor() == currentColor)
-            {
-                runLength++;
-            }
-
-            if (Console.ForegroundColor != currentColor)
-            {
-                Console.ForegroundColor = currentColor;
-            }
-
-            Console.Out.Write(_charBuffer, currentIndex, runLength);
-            currentIndex += runLength;
         }
     }
 }

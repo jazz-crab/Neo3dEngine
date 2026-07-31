@@ -1,6 +1,6 @@
 ﻿using System.Runtime.InteropServices;
 
-namespace Neo3dEngine.Inputs;
+namespace Neo3dEngine;
 
 internal class LibX11InputProvider : IInputProvider
 {
