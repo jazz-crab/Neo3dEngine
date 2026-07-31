@@ -100,10 +100,10 @@ public class PreviewScene : Scene
         if (_importedModel != null) _importedModel.UpdateGeometry();
 
         _light.Position = new Vector3(0, 0, 0);
-        _sphere.Color = ConsoleColor.Red;
-        _plane.Color = ConsoleColor.DarkGreen;
-        _cube.Color = ConsoleColor.Cyan;
-        _importedModel.Color = ConsoleColor.Yellow;
+        _sphere.Color = Color.Red;
+        _plane.Color = Color.Green;
+        _cube.Color = Color.Blue;
+        _importedModel.Color = Color.Yellow;
         AddDisplaysObject(_cube);
         AddDisplaysObject(_sphere);
         AddDisplaysObject(_plane);

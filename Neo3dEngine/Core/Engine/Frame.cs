@@ -47,7 +47,7 @@ public class Frame(Scene activeScene, Screen screen)
 
             _screen.RenderFrame(_activeScene);
 
-            _screen.PrintText("Fps: " + Double.Round(GameTime.GetFps(), 1) + "       ", Vector2Int.Zero);
+            _screen.DrawText("Fps: " + Double.Round(GameTime.GetFps(), 1) + "       ", Vector2Int.Zero, Color.White);
 
             GameTime.EndFrame();
         }

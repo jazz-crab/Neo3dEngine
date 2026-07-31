@@ -4,7 +4,7 @@ public class UIManager
 {
     private readonly List<UIText> _elements = new();
 
-    public void AddText(string text, Vector2Int pos, ConsoleColor color = ConsoleColor.White)
+    public void AddText(string text, Vector2Int pos, Color color = default)
     {
         _elements.Add(new UIText { Text = text, Position = pos, Color = color });
     }

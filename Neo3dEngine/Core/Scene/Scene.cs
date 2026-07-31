@@ -31,15 +31,15 @@ public abstract class Scene
     public abstract void Start();
     public abstract void Update();
 
-    public virtual (int Brightness, ConsoleColor Color) GetPixelData(Vector2 uv)
+    public virtual (int Brightness, Color Color) GetPixelData(Vector2 uv)
     {
         Ray ray = _renderCamera.GetRayForUv(uv);
 
         var renderData = _displaysManager.FindClosestIntersection(ray, _allDisplays);
 
-        if (renderData.Intersection == -1)
+        if (Math.Abs(renderData.Intersection - (-1)) < 0.2)
         {
-            return (0, ConsoleColor.Black);
+            return (0, Color.Black);
         }
 
         int maxBrightness = 0;

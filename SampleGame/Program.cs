@@ -45,7 +45,7 @@ class Program
         Thread.Sleep(500);
         Console.Clear();
         
-        new Frame(new PriviewNetworkScene(isServer, ip, port), new ConsoleScreen()).MainLoop();
+        new Frame(new PriviewNetworkScene(isServer, ip, port), new CPUConsoleScreen()).MainLoop();
         //new Frame(new PreviewScene(]), new ConsoleScreenAsync()).MainLoop();
     }
 }

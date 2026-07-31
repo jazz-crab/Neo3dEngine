@@ -29,7 +29,7 @@ public class PriviewNetworkScene : Scene
 
         _floorPlane = CreatePlane();
         _floorPlane.Position = new Vector3(0, 0, 0);
-        _floorPlane.Color = ConsoleColor.Yellow;
+        _floorPlane.Color = Color.Yellow;
         
         _netManager = new NetworkManager();
         _myNetId = isServer ? 1 : Random.Shared.Next(2, 10000);
@@ -138,7 +138,7 @@ public class PriviewNetworkScene : Scene
     private void CreateRemotePlayer(int netId)
     {
         Object3d newPlayerCube = CreateCube();
-        ConsoleColor[] colors = { ConsoleColor.Red, ConsoleColor.Green, ConsoleColor.Blue, ConsoleColor.Yellow, ConsoleColor.Cyan, ConsoleColor.Magenta };
+        Color[] colors = { Color.Red, Color.Green, Color.Blue, Color.Yellow };
         newPlayerCube.Color = colors[netId % colors.Length];
         
         _remotePlayers.Add(netId, newPlayerCube);
@@ -202,17 +202,17 @@ public class PriviewNetworkScene : Scene
     {
         for (int i = 0; i < _chatHistory.Count; i++)
         {
-            UI.AddText(_chatHistory[i], new Vector2Int(2, 2 + i), ConsoleColor.Gray);
+            UI.AddText(_chatHistory[i], new Vector2Int(2, 2 + i), Color.Gray);
         }
 
         if (_isChatting)
         {
-            UI.AddText($"> {_currentInput}_", new Vector2Int(2, 2 + MaxHistory + 1), ConsoleColor.Yellow);
-            UI.AddText("[ENTER] Send  [ESC] Cancel", new Vector2Int(2, 2 + MaxHistory + 2), ConsoleColor.DarkGray);
+            UI.AddText($"> {_currentInput}_", new Vector2Int(2, 2 + MaxHistory + 1), Color.Yellow);
+            UI.AddText("[ENTER] Send  [ESC] Cancel", new Vector2Int(2, 2 + MaxHistory + 2), new Color(235, 146, 52));
         }
         else
         {
-            UI.AddText("Press [T] to chat", new Vector2Int(2, 2 + MaxHistory + 1), ConsoleColor.DarkGray);
+            UI.AddText("Press [T] to chat", new Vector2Int(2, 2 + MaxHistory + 1), Color.DarkGray);
         }
     }
     
