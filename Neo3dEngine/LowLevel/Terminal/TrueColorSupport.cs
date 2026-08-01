@@ -1,7 +1,6 @@
-﻿using System;
-using System.Runtime.InteropServices;
+﻿using System.Runtime.InteropServices;
 
-namespace Neo3dEngine;
+namespace Neo3dEngine.LowLevel;
 
 public static class TrueColorSupport
 {

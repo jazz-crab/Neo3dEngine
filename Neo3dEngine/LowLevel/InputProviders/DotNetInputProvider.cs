@@ -1,6 +1,6 @@
 ﻿using System.Collections.Concurrent;
 
-namespace Neo3dEngine;
+namespace Neo3dEngine.LowLevel;
 
 internal class DotNetInputProvider : IInputProvider
 {

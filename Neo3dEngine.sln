@@ -4,6 +4,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neo3dEngine", "Neo3dEngine\
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "SampleGame", "SampleGame\SampleGame.csproj", "{3B17E83F-D26A-419F-A604-46D2B2591564}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Neo3dEngine.Network", "Neo3dEngine.Network\Neo3dEngine.Network.csproj", "{7CBB8150-CBC9-4EF0-8A61-AC10FB715B72}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -18,5 +20,9 @@ Global
 		{3B17E83F-D26A-419F-A604-46D2B2591564}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{3B17E83F-D26A-419F-A604-46D2B2591564}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{3B17E83F-D26A-419F-A604-46D2B2591564}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7CBB8150-CBC9-4EF0-8A61-AC10FB715B72}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7CBB8150-CBC9-4EF0-8A61-AC10FB715B72}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7CBB8150-CBC9-4EF0-8A61-AC10FB715B72}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7CBB8150-CBC9-4EF0-8A61-AC10FB715B72}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 EndGlobal

@@ -1,4 +1,4 @@
-﻿using System.Text;
+﻿using Neo3dEngine.LowLevel;
 
 namespace Neo3dEngine;
 public class CPUConsoleScreen : Screen

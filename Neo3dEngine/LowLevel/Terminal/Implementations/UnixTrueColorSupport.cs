@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Neo3dEngine;
+﻿namespace Neo3dEngine.LowLevel;
 
 internal class UnixTrueColorSupport : ITrueColorSupport
 {

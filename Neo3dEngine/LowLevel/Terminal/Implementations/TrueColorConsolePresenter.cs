@@ -1,6 +1,6 @@
 ﻿using System.Text;
 
-namespace Neo3dEngine;
+namespace Neo3dEngine.LowLevel;
 
 internal class TrueColorConsolePresenter(int width, int height) : IConsolePresenter
 {

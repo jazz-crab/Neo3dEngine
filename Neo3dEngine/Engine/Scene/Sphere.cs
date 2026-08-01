@@ -1,4 +1,6 @@
-﻿namespace Neo3dEngine;
+﻿using Neo3dEngine.LowLevel;
+
+namespace Neo3dEngine;
 
 public class Sphere(Vector3 position, Vector3 localRotate, float r = 1) : GameObject(position, localRotate), IDisplays
 {

@@ -1,4 +1,4 @@
-﻿namespace Neo3dEngine;
+﻿namespace Neo3dEngine.LowLevel;
 
 internal class FallbackTrueColorSupport : ITrueColorSupport
 {

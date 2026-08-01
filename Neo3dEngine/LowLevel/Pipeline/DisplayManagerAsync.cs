@@ -1,4 +1,4 @@
-﻿namespace Neo3dEngine;
+﻿namespace Neo3dEngine.LowLevel;
 public class DisplayManagerAsync : IDisplaysManagerAsync
 {
     public RenderData FindClosestIntersection(Ray ray, List<IDisplays> displays)

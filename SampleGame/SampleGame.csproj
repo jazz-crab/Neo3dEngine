@@ -8,6 +8,7 @@
     </PropertyGroup>
 
     <ItemGroup>
+      <ProjectReference Include="..\Neo3dEngine.Network\Neo3dEngine.Network.csproj" />
       <ProjectReference Include="..\Neo3dEngine\Neo3dEngine.csproj" />
     </ItemGroup>
 

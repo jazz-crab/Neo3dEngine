@@ -1,4 +1,6 @@
-﻿namespace Neo3dEngine;
+﻿using Neo3dEngine.LowLevel;
+
+namespace Neo3dEngine;
 
 public abstract class Scene
 {
