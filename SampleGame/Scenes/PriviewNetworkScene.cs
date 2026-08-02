@@ -28,7 +28,7 @@ public class PriviewNetworkScene : Scene
 
         _floorPlane = CreatePlane();
         _floorPlane.Position = new Vector3(0, 0, 0);
-        _floorPlane.Color = Color.Yellow;
+        _floorPlane.Shader = new SolidColorShader(Color.Yellow);
         
         _netManager = new NetworkManager();
         _myNetId = isServer ? 1 : Random.Shared.Next(2, 10000);
@@ -138,7 +138,7 @@ public class PriviewNetworkScene : Scene
     {
         Object3d newPlayerCube = CreateCube();
         Color[] colors = { Color.Red, Color.Green, Color.Blue, Color.Yellow };
-        newPlayerCube.Color = colors[netId % colors.Length];
+        newPlayerCube.Shader = new SolidColorShader(colors[netId % colors.Length]);
         
         _remotePlayers.Add(netId, newPlayerCube);
         AddDisplaysObject(newPlayerCube);

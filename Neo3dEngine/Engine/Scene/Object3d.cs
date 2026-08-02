@@ -8,8 +8,9 @@ public class Object3d : GameObject, IDisplays
 
     private readonly Vector3[] _localVertices;
     private readonly Vector3[] _worldVertices;
-
     private float _boundingRadius = 0;
+    
+    public IShader Shader { get; set; } = new SolidColorShader(Color.White);
 
     public Object3d(Vector3[] vertex, Vector3[] normals, FacingInfo[] facingInfos) : base(Vector3.Zero, Vector3.Zero)
     {
@@ -71,7 +72,8 @@ public class Object3d : GameObject, IDisplays
         }
         if (closestData.Intersection > -1)
         {
-            closestData.Color = this.Color;
+            var context = new ShaderContext(closestData.IntersectionPoint, closestData.Normal, closestData.UV, ray.RayDirection);
+            closestData.Color = Shader.GetColor(context);
         }
         return closestData;
     }

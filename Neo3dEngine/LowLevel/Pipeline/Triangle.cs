@@ -47,6 +47,6 @@ internal class Triangle(int[] indices, Vector3 normal)
 
         var intersectionPoint = ray.GetIntersectionPoint(intersection);
 
-        return new RenderData(intersection, rotatedNormal, intersectionPoint);
+        return new RenderData(intersection, rotatedNormal, intersectionPoint, new Vector2(u, v));
     }
 }

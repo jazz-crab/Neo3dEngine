@@ -99,10 +99,10 @@ public class PreviewScene : Scene
         if (_importedModel != null) _importedModel.UpdateGeometry();
 
         _light.Position = new Vector3(0, 0, 0);
-        _sphere.Color = Color.Red;
-        _plane.Color = Color.Green;
-        _cube.Color = Color.Blue;
-        _importedModel.Color = Color.Yellow;
+        //_sphere.Color = Color.Red;
+        _plane.Shader = new ChessShader();
+        _cube.Shader = new MyGradientShader();
+        _importedModel.Shader = new SolidColorShader(Color.Yellow);
         AddDisplaysObject(_cube);
         AddDisplaysObject(_sphere);
         AddDisplaysObject(_plane);
