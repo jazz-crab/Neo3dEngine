@@ -34,10 +34,17 @@ public static class Input
             string? sessionType = Environment.GetEnvironmentVariable("XDG_SESSION_TYPE");
             string? waylandDisplay = Environment.GetEnvironmentVariable("WAYLAND_DISPLAY");
             
-            if (sessionType == "wayland" && !string.IsNullOrEmpty(waylandDisplay))
+            // evdev работает и на X11, и на Wayland (читает /dev/input/event* напрямую),
+            // поэтому пробуем его первым на любой Linux-сессии
+            var evdevProvider = new EvdevInputProvider();
+            if (evdevProvider.IsAvailable)
+            {
+                selectedProvider = evdevProvider;
+            }
+            else if (sessionType == "wayland" && !string.IsNullOrEmpty(waylandDisplay))
             {
                 WarningMessage = "WARNING: Wayland session detected. Direct X11 input polling is restricted by OS security.\n" +
-                                 "-> Falling back to native .NET console buffer for safe and responsive input.";
+                                 "-> Falling back to native .NET console buffer for safe and responsive input. (evdev не найден)";
             }
             else
             {
