@@ -94,8 +94,6 @@ jobs:
           Source0:        %{name}-linux-x64.tar.gz
 
           BuildArch:      x86_64
-          BuildRequires:  tar
-          Requires:       tar
 
           %description
           Minimalist console 3D engine with raytracing.
