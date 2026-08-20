@@ -75,7 +75,8 @@ jobs:
 
           cp artifacts/linux-x64/neo3dengine-linux-x64.tar.gz "$BUILD_DIR/SOURCES/"
 
-          cat > "$BUILD_DIR/SPECS/neo3dengine.spec" << 'SPEC'
+          # Write spec file (no leading whitespace — RPM requires it)
+          cat > "$BUILD_DIR/SPECS/neo3dengine.spec" <<'SPEC'
           %define name neo3dengine
           %define installdir /opt/neo3dengine
 
@@ -152,7 +153,7 @@ jobs:
           path: artifacts/nuget/*.nupkg
 
   publish-release:
-    needs: [build-rpm, build-nuget, build-win-x64]
+    needs: [build-linux-x64, build-rpm, build-nuget, build-win-x64]
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
@@ -166,6 +167,8 @@ jobs:
           mkdir -p release-assets
           cp artifacts/nuget/*.nupkg release-assets/ 2>/dev/null || true
           cp artifacts/rpm/*.rpm release-assets/ 2>/dev/null || true
+          cp artifacts/linux-x64/*.tar.gz release-assets/ 2>/dev/null || true
+          cp artifacts/win-x64/*.tar.gz release-assets/ 2>/dev/null || true
 
       - name: Upload to GitHub Release
         env:
