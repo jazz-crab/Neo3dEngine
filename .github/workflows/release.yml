@@ -1,0 +1,176 @@
+name: Release Packages
+
+on:
+  push:
+    tags:
+      - "v*"
+
+permissions:
+  contents: write
+
+jobs:
+  build-linux-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build linux-x64
+        run: dotnet publish SampleGame/SampleGame.csproj -c Release -r linux-x64 --self-contained -o artifacts/linux-x64
+
+      - name: Package linux-x64 as tar.gz
+        run: tar -czf artifacts/neo3dengine-linux-x64.tar.gz -C artifacts/linux-x64 .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: linux-x64
+          path: artifacts/neo3dengine-linux-x64.tar.gz
+
+  build-win-x64:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Build win-x64
+        run: dotnet publish SampleGame/SampleGame.csproj -c Release -r win-x64 --self-contained -o artifacts/win-x64
+
+      - name: Package win-x64 as tar.gz
+        run: tar -czf artifacts/neo3dengine-win-x64.tar.gz -C artifacts/win-x64 .
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: win-x64
+          path: artifacts/neo3dengine-win-x64.tar.gz
+
+  build-rpm:
+    needs: build-linux-x64
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          name: linux-x64
+          path: artifacts/linux-x64
+
+      - name: Install rpm-build
+        run: sudo apt-get update && sudo apt-get install -y rpm
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Build RPM
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          BUILD_DIR="${{ github.workspace }}/rpmbuild"
+          mkdir -p "$BUILD_DIR"/{BUILD,RPMS,SOURCES,SPECS,SRPMS}
+
+          cp artifacts/linux-x64/neo3dengine-linux-x64.tar.gz "$BUILD_DIR/SOURCES/"
+
+          cat > "$BUILD_DIR/SPECS/neo3dengine.spec" << 'SPEC'
+          %define name neo3dengine
+          %define installdir /opt/neo3dengine
+
+          Name:           %{name}
+          Version:        %{version}
+          Release:        %{release}
+          Summary:        Minimalist console 3D engine with raytracing
+
+          License:        GPL-3.0-only
+          URL:            https://github.com/IvanSobolev/Neo3dEngine
+          Source0:        %{name}-linux-x64.tar.gz
+
+          BuildArch:      x86_64
+          BuildRequires:  tar
+          Requires:       tar
+
+          %description
+          Minimalist console 3D engine with raytracing.
+          Neo3dEngine is a C# library and sample game for console-based 3D rendering.
+
+          %prep
+          # Pre-built binaries, nothing to prepare
+
+          %build
+          # Pre-built binaries, nothing to build
+
+          %install
+          mkdir -p %{buildroot}%{installdir}
+          tar -xzf %{SOURCE0} -C %{buildroot}%{installdir}
+          mkdir -p %{buildroot}/usr/bin
+          ln -sf %{installdir}/SampleGame %{buildroot}/usr/bin/neo3dengine
+
+          %files
+          %dir %{installdir}
+          %{installdir}/*
+          /usr/bin/neo3dengine
+          SPEC
+
+          rpmbuild -bb \
+            --define "_topdir $BUILD_DIR" \
+            --define "version $VERSION" \
+            --define "release 1" \
+            "$BUILD_DIR/SPECS/neo3dengine.spec"
+
+          mkdir -p artifacts/rpm
+          cp "$BUILD_DIR"/RPMS/x86_64/*.rpm artifacts/rpm/
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: rpm
+          path: artifacts/rpm/*.rpm
+
+  build-nuget:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-dotnet@v4
+        with:
+          dotnet-version: "8.0.x"
+
+      - name: Extract version from tag
+        id: version
+        run: echo "VERSION=${GITHUB_REF_NAME#v}" >> "$GITHUB_OUTPUT"
+
+      - name: Pack NuGet
+        run: |
+          VERSION="${{ steps.version.outputs.VERSION }}"
+          dotnet pack 3dEngine/3dEngine.csproj -c Release -o artifacts/nuget -p:PackageVersion="$VERSION"
+
+      - uses: actions/upload-artifact@v4
+        with:
+          name: nuget
+          path: artifacts/nuget/*.nupkg
+
+  publish-release:
+    needs: [build-rpm, build-nuget, build-win-x64]
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/download-artifact@v4
+        with:
+          path: artifacts
+
+      - name: Collect release assets
+        run: |
+          mkdir -p release-assets
+          cp artifacts/nuget/*.nupkg release-assets/ 2>/dev/null || true
+          cp artifacts/rpm/*.rpm release-assets/ 2>/dev/null || true
+
+      - name: Upload to GitHub Release
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          if ls release-assets/* >/dev/null 2>&1; then
+            gh release upload "${{ github.ref_name }}" release-assets/* --clobber
+          fi

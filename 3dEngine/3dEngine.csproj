@@ -6,6 +6,14 @@
         <RootNamespace>_3dEngine</RootNamespace>
         <ImplicitUsings>enable</ImplicitUsings>
         <Nullable>enable</Nullable>
+
+        <PackageId>Neo3dEngine</PackageId>
+        <Authors>IvanSobolev</Authors>
+        <Description>Minimalist console 3D engine with raytracing in C#</Description>
+        <PackageLicenseExpression>GPL-3.0-only</PackageLicenseExpression>
+        <PackageProjectUrl>https://github.com/IvanSobolev/Neo3dEngine</PackageProjectUrl>
+        <RepositoryUrl>https://github.com/IvanSobolev/Neo3dEngine</RepositoryUrl>
+        <PackageTags>3d engine console raytracing csharp</PackageTags>
     </PropertyGroup>
 
 </Project>
